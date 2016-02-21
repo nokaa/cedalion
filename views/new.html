@@ -1,14 +1,40 @@
+<!doctype html>
 <html>
     <head>
         <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0"/>
+
+        <title>Cedalion</title>
+        <meta name="description" content="A site for sharing plaintext"/>
+        <meta name="author" content="nokaa"/>
+
+        <style>
+@charset "UTF-8";.f,body{text-shadow:0 1px 0 #8D0000;font-size:18px;color:#F87C7C}.f,a,body{color:#F87C7C}.c{text-align:center}.l{border-bottom:0}.t{width:100%;resize:none}.bg{background:#373B41;border:none}.i{padding:9px}.f{font-family:monospace}.b,body{font-family:georgia,serif}.b{padding:3px;cursor:pointer;box-shadow:1px 1px 0 #272B31}.co{margin:1% auto;width:100px}.la{margin-bottom:1%}body{margin:5% auto;padding:0 10px;max-width:650px;background:#4C4C4C;line-height:1.6}code,pre{background:#373B41;font-size:85%;border-radius:3px}pre{word-wrap:normal;padding:9px}code{font-family:monospace;padding:.2em 0}code::after,code::before{letter-spacing:-.2em;content:" "}a{border-bottom:1px solid #F87C7C;text-decoration:none}a:hover{border-bottom:0}h1,h2,h3{line-height:1.3}footer{padding-top:5%;font-size:12px}
+        </style>
     </head>
     <body>
-        <form method="POST" action="/new">
-            <label for="filetype">Filetype</label>
-            <input name="filetype" type="text" placeholder="rs"/></br>
-            <label for="paste">Paste</label></br>
-            <textarea name="paste" cols="80" rows="24" placeholder='fn main() { println!("hello world!"); }'></textarea>
-            <button name="action" type="submit">Paste</button>
-        </form>
+        <header role="banner" aria-label="main">
+            <h1 class="c">Cedalion</h1>
+            <p class="c">
+                This project was created by <a href="https://nokaa.moe">nokaa</a>.</br>
+                Cedalion is licensed under the <a href="">AGPL</a>.</br>
+                Its source is available at <a href="">GitHub</a> or <a href="https://git.nokaa.moe/nokaa">here</a>.
+            </p>
+        </header>
+        <main aria-label="Content">
+            <form method="POST" action="/new">
+                <label for="filetype">Filetype</label></br>
+                <div class="la"><input class="i f bg" name="filetype" type="text" placeholder="rs"/></div></br>
+                <label for="paste">Paste</label></br>
+                <textarea class="i t f bg" name="paste" rows="24" placeholder='fn main() { println!("hello world!"); }'></textarea></br>
+                <div class="co"><button class="b co f bg" name="action" type="submit">Paste</button></div>
+            </form>
+        </main>
+        <footer class="c" aria-label="License information">
+            <a class="l" rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+                <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+            </a><br />
+            All user contributions are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+        </footer>
     </body>
 </html>
