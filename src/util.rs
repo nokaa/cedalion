@@ -37,6 +37,11 @@ pub fn redirect(res: &mut Response, data: &[u8], location: &[u8], code: u16) {
 /// Sends `data` to the client with status 200.
 pub fn send_string(res: &mut Response, data: &[u8]) {
     res.status(200, "OK");
+    // Add `Content-Type` header to ensure data is interpreted
+    // as plaintext
+    res.add_header("Content-Type",
+                   "text/plain; charset=utf-8".as_bytes())
+        .unwrap();
     res.add_length(data.len() as u64).unwrap();
     res.done_headers().unwrap();
     res.write_body(data);
@@ -73,6 +78,7 @@ pub fn read_file(filename: &str) -> Vec<u8> {
     buf
 }
 
+#[allow(dead_code)]
 /// Writes `data` to `filename`.
 pub fn write_file(filename: &str, data: &[u8]) -> Result<(), io::Error> {
     let mut file = try!(File::create(filename));

@@ -1,12 +1,21 @@
+#![feature(custom_derive, custom_attribute, plugin)]
+#![plugin(diesel_codegen, dotenv_macros)]
+
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
+
 #[macro_use]
 extern crate chomp;
+extern crate rand;
 extern crate rotor;
 extern crate rotor_http;
 
+mod database;
 mod forms;
 mod util;
 
-use std::str;
+//use std::str;
 use std::time::Duration;
 
 use rotor::{Scope, Time};
@@ -62,7 +71,6 @@ impl Server for PasteRoutes {
         Some((match head.path {
             "/" => New,
             "/new" => {
-                //println!("{:?}", head);
                 MakePaste
             }
             "/num" => GetNum,
@@ -88,19 +96,26 @@ impl Server for PasteRoutes {
             MakePaste => {
                 let form = forms::parse_form(data);
 
-                let filename = str::from_utf8(form.get(&"filetype".to_string()).unwrap())
-                    .ok().expect("Unable to convert filetype to str!");
+                let filetype = form.get(&"filetype".to_string()).unwrap();
                 let paste = form.get(&"paste".to_string()).unwrap();
 
-                util::write_file(filename, paste).unwrap();
+                let paste = database::write_paste(filetype, paste).name;
+                let mut location: Vec<u8> = vec![b'/'];
+                for c in paste[..].as_bytes() {
+                    location.push(*c);
+                }
 
                 util::redirect(res,
                                b"You are being redirected",
-                               b"/",
+                               &location[..],
                                302);
             }
-            GetPaste(_) => {
-                util::send_file(res, "views/view.html");
+            GetPaste(p) => {
+                let paste = database::read_paste(&p[..].as_bytes());
+                match paste {
+                    Some(p) => util::send_string(res, &p.paste[..].as_bytes()),
+                    None => util::four_o_four(res, b"404 - Page not found"),
+                }
             }
             GetNum => {
                 util::send_string(res,
