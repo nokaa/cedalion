@@ -5,3 +5,9 @@ rust:
 os:
   - linux
   - osx
+
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database cedalion;' -U postgres
