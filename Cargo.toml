@@ -1,0 +1,9 @@
+[package]
+name = "rust_bin"
+version = "0.1.0"
+authors = ["nokaa <nokaa@cock.li>"]
+
+[dependencies]
+chomp = "0.2.4"
+rotor = { git = "https://github.com/tailhook/rotor", rev="08946ce" }
+rotor-http = { git = "https://github.com/tailhook/rotor-http" }
