@@ -21,5 +21,6 @@ Note: If you plan on using this, you should run `cargo build --release` and `car
 
 ### TODO
 - Add html viewer
+  - This will require templates of some form. [Maud](https://github.com/lfairy/maud) looked interesting.
 - Add ability to get raw file; this should trigger browser download
   - Should be accessed via html viewer
