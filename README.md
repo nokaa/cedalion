@@ -1,4 +1,4 @@
-# Cedalion
+# Cedalion [![Build Status](https://travis-ci.org/nokaa/cedalion.svg?branch=master)](https://travis-ci.org/nokaa/cedalion)
 Cedalion is a pastebin clone written in Rust using [rotor-http](https://github.com/tailhook/rotor-http), [chomp](https://github.com/m4rw3r/chomp), and [diesel](https://github.com/sgrif/diesel).
 
 The webpages use [Erato](https://github.com/nokaa/erato), a minimalistic stylesheet.
