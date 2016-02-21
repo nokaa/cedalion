@@ -11,3 +11,5 @@ services:
 
 before_script:
   - psql -c 'create database cedalion;' -U postgres
+  - cargo install diesel_cli
+  - diesel migration run
