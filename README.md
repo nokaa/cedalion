@@ -9,6 +9,8 @@ I would host an interactive version but my server is ARM based, and there are cu
 
 ### Install
 NOTE: Cedalion currently will not build on ARM due to an issue with [nix](https://github.com/nix-rust/nix). The nix repo builds properly, but the version on crates.io (0.4.2) fails. Unfortunately this is not my dependency, but is a dependency of Mio. It may be possible to do this by packaging the necessary crates yourself, but I have yet to test this.
+
+
 Cedalion requires PostgreSQL with a database named `cedalion`. You can create this by running `createdb cedalion`.
 
 Cedalion requires Rust Nightly. If you don't already have nightly, I recommend using [multirust](https://github.com/brson/multirust) to get it.
