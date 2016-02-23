@@ -16,3 +16,4 @@ rand = "0.3"
 
 rotor = { git = "https://github.com/tailhook/rotor", rev="08946ce" }
 rotor-http = { git = "https://github.com/tailhook/rotor-http" }
+rotor-http-utils = { git = "https://github.com/nokaa/rotor-http-utils" }

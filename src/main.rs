@@ -10,18 +10,20 @@ extern crate chomp;
 extern crate rand;
 extern crate rotor;
 extern crate rotor_http;
+extern crate rotor_http_utils;
 
 mod database;
-mod forms;
-mod util;
+//mod forms;
+//mod util;
 
 //use std::str;
 use std::time::Duration;
 
 use rotor::{Scope, Time};
+use rotor::mio::tcp::TcpListener;
 use rotor_http::server::{RecvMode, Server, Head, Response};
 use rotor_http::ServerFsm;
-use rotor::mio::tcp::TcpListener;
+use rotor_http_utils::{forms, util};
 
 struct Context {
     counter: usize,
@@ -70,9 +72,7 @@ impl Server for PasteRoutes {
         scope.increment();
         Some((match head.path {
             "/" => New,
-            "/new" => {
-                MakePaste
-            }
+            "/new" => MakePaste,
             "/num" => GetNum,
             "/404" => PageNotFound,
             p if p.starts_with('/') => GetPaste(p[1..].to_string()),
@@ -94,7 +94,7 @@ impl Server for PasteRoutes {
                 util::send_file(res, "views/new.html");
             }
             MakePaste => {
-                let form = forms::parse_form(data);
+                let form = forms::parse_form(data).unwrap();
 
                 let filetype = form.get(&"filetype".to_string()).unwrap();
                 let paste = form.get(&"paste".to_string()).unwrap();
@@ -113,8 +113,12 @@ impl Server for PasteRoutes {
             GetPaste(p) => {
                 let paste = database::read_paste(&p[..].as_bytes());
                 match paste {
-                    Some(p) => util::send_string(res, &p.paste[..].as_bytes()),
-                    None => util::four_o_four(res, b"404 - Page not found"),
+                    Some(p) => util::send_string_raw(res, &p.paste[..].as_bytes()),
+                    None => { 
+                        util::error(res,
+                                    b"404 - Page not found",
+                                    404);
+                    }
                 }
             }
             GetNum => {
@@ -123,7 +127,9 @@ impl Server for PasteRoutes {
                                   .as_bytes());
             }
             PageNotFound => {
-                util::four_o_four(res, b"404 - Page not found");
+                util::error(res,
+                            b"404 - Page not found",
+                            404);
             }
         }
 
