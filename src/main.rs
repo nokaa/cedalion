@@ -91,7 +91,9 @@ impl Server for PasteRoutes {
         use self::PasteRoutes::*;
         match self {
             New => {
-                util::send_file(res, "views/new.html");
+                if let Err(e) = util::send_file(res, "views/new.html") {
+                    println!("{}", e);
+                }
             }
             MakePaste => {
                 let form = forms::parse_form(data).unwrap();
@@ -105,19 +107,23 @@ impl Server for PasteRoutes {
                     location.push(*c);
                 }
 
-                util::redirect(res,
-                               b"You are being redirected",
-                               &location[..],
-                               302);
+                if let Err(e) = util::redirect(res,
+                                               b"You are being redirected",
+                                               &location[..],
+                                               302) {
+                    println!("{}", e);
+                }
             }
             GetPaste(p) => {
                 let paste = database::read_paste(&p[..].as_bytes());
                 match paste {
                     Some(p) => util::send_string_raw(res, &p.paste[..].as_bytes()),
                     None => { 
-                        util::error(res,
-                                    b"404 - Page not found",
-                                    404);
+                        if let Err(e) = util::error(res,
+                                                    b"404 - Page not found",
+                                                    404) {
+                            println!("{}", e);
+                        }
                     }
                 }
             }
@@ -127,9 +133,11 @@ impl Server for PasteRoutes {
                                   .as_bytes());
             }
             PageNotFound => {
-                util::error(res,
-                            b"404 - Page not found",
-                            404);
+                if let Err(e) = util::error(res,
+                                            b"404 - Page not found",
+                                            404) {
+                    println!("{}", e);
+                }
             }
         }
 
