@@ -13,16 +13,12 @@ extern crate rotor_http;
 extern crate rotor_http_utils;
 
 mod database;
-//mod forms;
-//mod util;
 
-//use std::str;
 use std::time::Duration;
 
 use rotor::{Scope, Time};
 use rotor::mio::tcp::TcpListener;
-use rotor_http::server::{RecvMode, Server, Head, Response};
-use rotor_http::ServerFsm;
+use rotor_http::server::{RecvMode, Server, Head, Response, Fsm};
 use rotor_http_utils::{forms, util};
 
 struct Context {
@@ -44,13 +40,6 @@ impl Counter for Context {
     }
 }
 
-impl rotor_http::server::Context for Context {
-    // Default impl is okay
-    fn byte_timeout(&self) -> Duration {
-        Duration::new(1000, 0)
-    }
-}
-
 #[derive(Debug, Clone)]
 enum PasteRoutes {
     New,
@@ -61,9 +50,11 @@ enum PasteRoutes {
 }
 
 impl Server for PasteRoutes {
+    type Seed = ();
     type Context = Context;
     
-    fn headers_received(head: Head,
+    fn headers_received(_seed: (),
+                        head: Head,
                         _res: &mut Response,
                         scope: &mut Scope<Context>)
         -> Option<(Self, RecvMode, Time)>
@@ -115,15 +106,11 @@ impl Server for PasteRoutes {
                 }
             }
             GetPaste(p) => {
-                let paste = database::read_paste(&p[..].as_bytes());
-                match paste {
-                    Some(p) => util::send_string_raw(res, &p.paste[..].as_bytes()),
-                    None => { 
-                        if let Err(e) = util::error(res,
-                                                    b"404 - Page not found",
-                                                    404) {
-                            println!("{}", e);
-                        }
+                if let Some(p) = database::read_paste(&p[..].as_bytes()) {
+                    util::send_string_raw(res, &p.paste[..].as_bytes());
+                } else {
+                    if let Err(e) = util::error(res, b"404 - Page not found", 404) {
+                        println!("{}", e);
                     }
                 }
             }
@@ -183,7 +170,7 @@ fn main() {
     let event_loop = rotor::Loop::new(&rotor::Config::new()).unwrap();
     let mut loop_inst = event_loop.instantiate(Context { counter: 0 });
     let lst = TcpListener::bind(&"127.0.0.1:3000".parse().unwrap()).unwrap();
-    loop_inst.add_machine_with(|scope| ServerFsm::<PasteRoutes, _>::new(lst, scope))
+    loop_inst.add_machine_with(|scope| Fsm::<PasteRoutes, _>::new(lst, (), scope))
         .unwrap();
     loop_inst.run().unwrap();
     println!("Listening at 127.0.0.1:3000");
