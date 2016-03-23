@@ -8,7 +8,7 @@ The webpages use [Erato](https://github.com/nokaa/erato), a minimalistic stylesh
 I would host an interactive version but my server is ARM based, and there are currently issues with compiling Cedalion on ARM.
 
 ### Install
-NOTE: Cedalion currently will not build on ARM due to an issue with [nix](https://github.com/nix-rust/nix). The nix repo builds properly, but the version on crates.io (0.4.2) fails. Unfortunately this is not my dependency, but is a dependency of Mio. It may be possible to do this by packaging the necessary crates yourself, but I have yet to test this.
+NOTE: Cedalion currently will not build on ARM due to an issue with [nix](https://github.com/nix-rust/nix). The current version of nix compiles properly, but Mio v0.5.0 requires v0.4.2, which will not build. As there are breaking changes between nix v0.4.2 and v0.5.0, it is not possible to easily get around this issue. Until Mio updates to the newest version of nix, and rotor then updates to the newest version of Mio, using rotor on ARM does not seem possible.
 
 
 Cedalion requires PostgreSQL with a database named `cedalion`. You can create this by running `createdb cedalion`.
