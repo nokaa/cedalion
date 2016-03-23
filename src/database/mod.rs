@@ -36,8 +36,6 @@ pub fn read_paste(paste_name: &[u8]) -> Option<Paste> {
             Ok(p) => Some(p),
             _ => None,
     };
-        //.ok()
-        //.expect("Error loading pastes");
 
     my_paste
 }

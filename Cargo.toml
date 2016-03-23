@@ -14,6 +14,6 @@ dotenv_macros = "^0.8.0"
 
 rand = "0.3"
 
-rotor = "0.6.1"
+rotor = "0.6.3"
 rotor-http = { git = "https://github.com/tailhook/rotor-http" }
 rotor-http-utils = { git = "https://github.com/nokaa/rotor-http-utils" }
