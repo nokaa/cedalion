@@ -5,9 +5,8 @@ The webpages use [Erato](https://github.com/nokaa/erato), a minimalistic stylesh
 
 <img src="cedalion.png"/>
 
-I would host an interactive version but my server is ARM based, and there are currently issues with compiling Cedalion on ARM.
-
 ### Install
+NOTE: Building on ARM requires a patched version of mio v0.5.0, which you can get [on my git server](https://git.nokaa.moe/nokaa/mio_arm/src/v0.5.1).
 NOTE: Cedalion currently will not build on ARM due to an issue with [nix](https://github.com/nix-rust/nix). The current version of nix compiles properly, but Mio v0.5.0 requires v0.4.2, which will not build. As there are breaking changes between nix v0.4.2 and v0.5.0, it is not possible to easily get around this issue. Until Mio updates to the newest version of nix, and rotor then updates to the newest version of Mio, using rotor on ARM does not seem possible.
 
 
