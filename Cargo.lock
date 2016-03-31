@@ -4,12 +4,12 @@ version = "0.1.0"
 dependencies = [
  "chomp 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "diesel 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "diesel_codegen 0.5.2 (git+https://github.com/sgrif/diesel)",
+ "diesel_codegen 0.5.4 (git+https://github.com/sgrif/diesel)",
  "dotenv 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "dotenv_macros 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "rotor 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "rotor-http 0.6.0 (git+https://github.com/tailhook/rotor-http)",
+ "rotor-http 0.7.0 (git+https://github.com/tailhook/rotor-http)",
  "rotor-http-utils 0.1.0 (git+https://github.com/nokaa/rotor-http-utils)",
 ]
 
@@ -52,20 +52,20 @@ version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "conv 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "conv 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "conv"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "custom_derive 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "custom_derive 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "custom_derive"
-version = "0.1.4"
+version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -74,14 +74,14 @@ version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "pq-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "diesel_codegen"
-version = "0.5.2"
-source = "git+https://github.com/sgrif/diesel#d360fe44fa082772f09f4f4d300f99a70e3b202c"
+version = "0.5.4"
+source = "git+https://github.com/sgrif/diesel#05a9ccf8f05438028074697cf9a163a018597c28"
 dependencies = [
  "diesel 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -91,7 +91,7 @@ name = "dotenv"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "regex 0.1.58 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex 0.1.61 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -112,7 +112,7 @@ dependencies = [
 
 [[package]]
 name = "httparse"
-version = "1.1.1"
+version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -131,7 +131,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "libc"
-version = "0.2.8"
+version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -139,7 +139,7 @@ name = "log"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -152,8 +152,13 @@ name = "memchr"
 version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
+
+[[package]]
+name = "mempool"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "mio"
@@ -189,7 +194,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cfg-if 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "kernel32-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "winapi 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "ws2_32-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -209,11 +214,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "nom"
+version = "1.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
 name = "pq-sys"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -231,23 +241,24 @@ name = "rand"
 version = "0.3.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "regex"
-version = "0.1.58"
+version = "0.1.61"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "aho-corasick 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "memchr 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
- "regex-syntax 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mempool 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "regex-syntax 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "utf8-ranges 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "regex-syntax"
-version = "0.3.0"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -264,42 +275,43 @@ dependencies = [
 
 [[package]]
 name = "rotor-http"
-version = "0.6.0"
-source = "git+https://github.com/tailhook/rotor-http#feaf6af07b6475072d5ac19c644ddcec539373d5"
+version = "0.7.0"
+source = "git+https://github.com/tailhook/rotor-http#306544f7eb46cf3690d5696f56f362463c0b763e"
 dependencies = [
- "httparse 1.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "httparse 1.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "matches 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-error 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rotor 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "rotor-stream 0.5.1 (git+git://github.com/tailhook/rotor-stream?rev=1d0b856)",
+ "rotor-stream 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "rotor-http-utils"
 version = "0.1.0"
-source = "git+https://github.com/nokaa/rotor-http-utils#991a2229e768b760e8bfffc215a019402b74b6b3"
+source = "git+https://github.com/nokaa/rotor-http-utils#e8f93cdf084aa53956bd033d8466ccb4740e890d"
 dependencies = [
- "chomp 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "nom 1.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
- "rotor-http 0.6.0 (git+https://github.com/tailhook/rotor-http)",
+ "rotor-http 0.7.0 (git+https://github.com/tailhook/rotor-http)",
 ]
 
 [[package]]
 name = "rotor-stream"
-version = "0.5.1"
-source = "git+git://github.com/tailhook/rotor-stream?rev=1d0b856#1d0b856bde87a42ec445e255faee78f946a37600"
+version = "0.6.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "log 0.3.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "memchr 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "netbuf 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-error 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rotor 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "rotor-tools 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rotor-tools 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "rotor-tools"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "rotor 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -316,7 +328,7 @@ version = "0.1.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "kernel32-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
  "winapi 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
