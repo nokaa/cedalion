@@ -2,33 +2,16 @@
 name = "cedalion"
 version = "0.1.0"
 dependencies = [
- "chomp 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "diesel 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "diesel_codegen 0.5.4 (git+https://github.com/sgrif/diesel)",
- "dotenv 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "dotenv_macros 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "redis 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rotor 0.6.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "rotor-http 0.7.0 (git+https://github.com/tailhook/rotor-http)",
  "rotor-http-utils 0.1.0 (git+https://github.com/nokaa/rotor-http-utils)",
 ]
 
 [[package]]
-name = "aho-corasick"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "memchr 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "bitflags"
 version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "bitflags"
-version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -45,70 +28,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "cfg-if"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "chomp"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "bitflags 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "conv 0.3.3 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "conv"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "custom_derive 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "custom_derive"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "diesel"
-version = "0.5.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
- "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
- "pq-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "diesel_codegen"
-version = "0.5.4"
-source = "git+https://github.com/sgrif/diesel#05a9ccf8f05438028074697cf9a163a018597c28"
-dependencies = [
- "diesel 0.5.3 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "dotenv"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "regex 0.1.61 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "dotenv_codegen"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "dotenv 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "dotenv_macros"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "dotenv_codegen 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
 
 [[package]]
 name = "httparse"
@@ -154,11 +73,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "mempool"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "mio"
@@ -219,14 +133,6 @@ version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
-name = "pq-sys"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "libc 0.2.9 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "quick-error"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -245,21 +151,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "regex"
-version = "0.1.61"
+name = "redis"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "aho-corasick 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "memchr 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
- "mempool 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "regex-syntax 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "utf8-ranges 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "sha1 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "url 0.5.7 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "regex-syntax"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "rotor"
@@ -318,6 +217,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustc-serialize"
+version = "0.3.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "sha1"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "byteorder 0.3.13 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "slab"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -333,9 +245,38 @@ dependencies = [
 ]
 
 [[package]]
-name = "utf8-ranges"
-version = "0.1.3"
+name = "unicode-bidi"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "matches 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "unicode-normalization"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "url"
+version = "0.5.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "matches 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unicode-bidi 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "unicode-normalization 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "uuid 0.1.18 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "uuid"
+version = "0.1.18"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.3.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "void"

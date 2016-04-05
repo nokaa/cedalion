@@ -1,18 +1,10 @@
-#![feature(custom_derive, custom_attribute, plugin)]
-#![plugin(diesel_codegen, dotenv_macros)]
-
-#[macro_use]
-extern crate diesel;
-extern crate dotenv;
-
-#[macro_use]
-extern crate chomp;
 extern crate rand;
+extern crate redis;
 extern crate rotor;
 extern crate rotor_http;
 extern crate rotor_http_utils;
 
-mod database;
+mod db;
 
 use std::time::Duration;
 
@@ -92,22 +84,26 @@ impl Server for PasteRoutes {
                 let filetype = form.get(&"filetype".to_string()).unwrap();
                 let paste = form.get(&"paste".to_string()).unwrap();
 
-                let paste = database::write_paste(filetype, paste).name;
-                let mut location: Vec<u8> = vec![b'/'];
-                for c in paste[..].as_bytes() {
-                    location.push(*c);
-                }
+                let mut paste = match db::new_paste(filetype, paste) {
+                    Ok(p) => p.into_bytes(),
+                    Err(e) => {
+                        let err = format!("Error creating paste: {}", e);
+                        util::send_string(res, err.as_bytes());
+                        return None;
+                    }
+                };
+                paste.insert(0, b'/');
 
                 if let Err(e) = util::redirect(res,
                                                b"You are being redirected",
-                                               &location[..],
+                                               &paste[..],
                                                302) {
                     println!("{}", e);
                 }
             }
             GetPaste(p) => {
-                if let Some(p) = database::read_paste(&p[..].as_bytes()) {
-                    util::send_string_raw(res, &p.paste[..].as_bytes());
+                if let Ok(p) = db::read_paste(&p[..].as_bytes()) {
+                    util::send_string_raw(res, p.as_bytes());
                 } else {
                     if let Err(e) = util::error(res, b"404 - Page not found", 404) {
                         println!("{}", e);
@@ -172,6 +168,6 @@ fn main() {
     let lst = TcpListener::bind(&"127.0.0.1:3000".parse().unwrap()).unwrap();
     loop_inst.add_machine_with(|scope| Fsm::<PasteRoutes, _>::new(lst, (), scope))
         .unwrap();
-    loop_inst.run().unwrap();
     println!("Listening at 127.0.0.1:3000");
+    loop_inst.run().unwrap();
 }
