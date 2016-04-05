@@ -10,4 +10,5 @@ redis = "0.5.2"
 
 rotor = "0.6.3"
 rotor-http = { git = "https://github.com/tailhook/rotor-http" }
-rotor-http-utils = { git = "https://github.com/nokaa/rotor-http-utils" }
+# Until THE GREAT NOM transition is finished, we use this revision
+rotor-http-utils = { rev = "dbe5bfe", git = "https://github.com/nokaa/rotor-http-utils" }
