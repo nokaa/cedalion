@@ -4,10 +4,9 @@ version = "0.1.0"
 authors = ["nokaa <nokaa@cock.li>"]
 
 [dependencies]
+clap = "1.5.5"
 rand = "0.3"
-
 redis = "0.5.2"
-
 rotor = "0.6.3"
 rotor-http = { git = "https://github.com/tailhook/rotor-http" }
 # Until THE GREAT NOM transition is finished, we use this revision

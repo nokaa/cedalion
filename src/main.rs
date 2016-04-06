@@ -1,3 +1,11 @@
+/* Copyright (C)  2016 nokaa <nokaa@cock.li>
+ * This software is licensed under the terms of the
+ * GNU Affero General Public License. You should have
+ * received a copy of this license with this software.
+ * The license may also be found at https://gnu.org/licenses/agpl.txt
+ */
+
+extern crate clap;
 extern crate rand;
 extern crate redis;
 extern crate rotor;
@@ -8,6 +16,7 @@ mod db;
 
 use std::time::Duration;
 
+use clap::App;
 use rotor::{Scope, Time};
 use rotor::mio::tcp::TcpListener;
 use rotor_http::server::{RecvMode, Server, Head, Response, Fsm};
@@ -163,11 +172,21 @@ impl Server for PasteRoutes {
 }
 
 fn main() {
+    let matches = App::new("cedalion")
+        .version("0.1")
+        .author("nokaa <nokaa@cock.li>")
+        .about("A pastebin server")
+        .args_from_usage(
+            "-a, --addr=[ADDR] 'Sets the IP:PORT combination (default \"127.0.0.1:3000\")'")
+        .get_matches();
+
+    let addr = matches.value_of("ADDR").unwrap_or("127.0.0.1:3000");
+
     let event_loop = rotor::Loop::new(&rotor::Config::new()).unwrap();
     let mut loop_inst = event_loop.instantiate(Context { counter: 0 });
-    let lst = TcpListener::bind(&"127.0.0.1:3000".parse().unwrap()).unwrap();
+    let lst = TcpListener::bind(&addr.parse().unwrap()).unwrap();
     loop_inst.add_machine_with(|scope| Fsm::<PasteRoutes, _>::new(lst, (), scope))
         .unwrap();
-    println!("Listening at 127.0.0.1:3000");
+    println!("Listening at {}", addr);
     loop_inst.run().unwrap();
 }
