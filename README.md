@@ -10,9 +10,14 @@ The webpages use [Erato](https://github.com/nokaa/erato), a minimalistic stylesh
 
 Cedalion requires redis to be installed on your system.
 
-Cedalion requires Rust Nightly. If you don't already have nightly, I recommend using [multirust](https://github.com/brson/multirust) to get it.
+Cedalion requires the Rust toolchain. If you don't already have it, I recommend using [multirust](https://github.com/brson/multirust) to get it.
 
-Note: If you plan on using this, you should run `cargo build --release` and `cargo run --release`.
+```
+git clone https://github.com/nokaa/cedalion
+cd cedalion
+cargo build --release
+./target/release/cedalion
+```
 
 ### Building on ARM
 

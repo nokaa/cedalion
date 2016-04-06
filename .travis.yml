@@ -1,15 +1,12 @@
 language: rust
 rust:
   - nightly
+  - beta
+  - stable
 
 os:
   - linux
   - osx
 
 services:
-  - postgresql
-
-before_script:
-  - psql -c 'create database cedalion;' -U postgres
-  - cargo install diesel_cli
-  - diesel migration run
+  - redis-server
