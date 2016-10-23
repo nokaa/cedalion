@@ -7,7 +7,13 @@ authors = ["nokaa <nokaa@cock.li>"]
 clap = "1.5.5"
 rand = "0.3"
 redis = "0.5.2"
-rotor = "0.6.3"
-rotor-http = { git = "https://github.com/tailhook/rotor-http" }
+futures = "0.1.1"
+tokio-core = "0.1.0"
+tokio-service = { git = "https://github.com/tokio-rs/tokio-service" }
+tk-bufstream = "0.1.0"
+netbuf = "0.3.5"
+minihttp = { git = "https://github.com/popravich/minihttp" }
+#rotor = "0.6.3"
+#rotor-http = { git = "https://github.com/tailhook/rotor-http" }
 # Until THE GREAT NOM transition is finished, we use this revision
-rotor-http-utils = { rev = "dbe5bfe", git = "https://github.com/nokaa/rotor-http-utils" }
+#rotor-http-utils = { rev = "dbe5bfe", git = "https://github.com/nokaa/rotor-http-utils" }

@@ -3,26 +3,37 @@
  * GNU Affero General Public License. You should have
  * received a copy of this license with this software.
  * The license may also be found at https://gnu.org/licenses/agpl.txt
- */
+ * */
 
 extern crate clap;
 extern crate rand;
 extern crate redis;
-extern crate rotor;
-extern crate rotor_http;
-extern crate rotor_http_utils;
+extern crate futures;
+extern crate tokio_core;
+extern crate tokio_service;
+extern crate tk_bufstream;
+extern crate netbuf;
+extern crate minihttp;
 
 mod db;
 
+use std::collections::HashMap;
+use std::io;
+use std::net::SocketAddr;
 use std::time::Duration;
+use std::rc::Rc;
 
 use clap::App;
-use rotor::{Scope, Time};
-use rotor::mio::tcp::TcpListener;
-use rotor_http::server::{RecvMode, Server, Head, Response, Fsm};
-use rotor_http_utils::{forms, util};
 
-struct Context {
+use futures::{Async, Finished, finished, IntoFuture};
+use tokio_core::io::Io;
+use tokio_core::net::TcpStream;
+use tokio_core::reactor::Core;
+use tokio_service::{Service, NewService};
+use tk_bufstream::IoBuf;
+use minihttp::{Request, Error, ResponseFn, ResponseWriter};
+
+/*struct Context {
     counter: usize,
 }
 
@@ -53,33 +64,31 @@ enum PasteRoutes {
 impl Server for PasteRoutes {
     type Seed = ();
     type Context = Context;
-    
+
     fn headers_received(_seed: (),
                         head: Head,
                         _res: &mut Response,
                         scope: &mut Scope<Context>)
-        -> Option<(Self, RecvMode, Time)>
-    {
+                        -> Option<(Self, RecvMode, Time)> {
         use self::PasteRoutes::*;
         scope.increment();
         Some((match head.path {
-            "/" => New,
-            "/new" => MakePaste,
-            "/num" => GetNum,
-            "/404" => PageNotFound,
-            p if p.starts_with('/') => GetPaste(p[1..].to_string()),
-            _ => PageNotFound,
-        },
-            RecvMode::Buffered(100_000),
-            scope.now() + Duration::new(10, 0)))
+                  "/" => New,
+                  "/new" => MakePaste,
+                  "/num" => GetNum,
+                  "/404" => PageNotFound,
+                  p if p.starts_with('/') => GetPaste(p[1..].to_string()),
+                  _ => PageNotFound,
+              },
+              RecvMode::Buffered(100_000),
+              scope.now() + Duration::new(10, 0)))
     }
 
     fn request_received(self,
                         data: &[u8],
                         res: &mut Response,
                         scope: &mut Scope<Context>)
-        -> Option<Self>
-    {
+                        -> Option<Self> {
         use self::PasteRoutes::*;
         match self {
             New => {
@@ -103,10 +112,7 @@ impl Server for PasteRoutes {
                 };
                 paste.insert(0, b'/');
 
-                if let Err(e) = util::redirect(res,
-                                               b"You are being redirected",
-                                               &paste[..],
-                                               302) {
+                if let Err(e) = util::redirect(res, b"You are being redirected", &paste[..], 302) {
                     println!("{}", e);
                 }
             }
@@ -122,12 +128,10 @@ impl Server for PasteRoutes {
             GetNum => {
                 util::send_string(res,
                                   format!("This host has been visited {} times", scope.get())
-                                  .as_bytes());
+                                      .as_bytes());
             }
             PageNotFound => {
-                if let Err(e) = util::error(res,
-                                            b"404 - Page not found",
-                                            404) {
+                if let Err(e) = util::error(res, b"404 - Page not found", 404) {
                     println!("{}", e);
                 }
             }
@@ -135,39 +139,33 @@ impl Server for PasteRoutes {
 
         None
     }
+}*/
 
-    fn request_chunk(self,
-                     _chunk: &[u8],
-                     _response: &mut Response,
-                     _scope: &mut Scope<Context>)
-        -> Option<Self>
-    {
-        unreachable!();
+#[derive(Clone)]
+struct HelloWorld;
+
+impl Service for HelloWorld {
+    type Request = Request;
+    type Response = ResponseFn<Finished<IoBuf<TcpStream>, Error>, TcpStream>;
+    type Error = Error;
+    type Future = Finished<Self::Response, Error>;
+
+    fn call(&self, _req: minihttp::Request) -> Self::Future {
+        // Note: rather than allocating a response object, we return
+        // a lambda that pushes headers into `ResponseWriter` which
+        // writes them directly into response buffer without allocating
+        // intermediate structures
+        finished(ResponseFn::new(move |mut res| {
+            res.status(200, "OK");
+            res.add_chunked().unwrap();
+            if res.done_headers().unwrap() {
+                res.write_body(b"Hello, world!");
+            }
+            res.done()
+        }))
     }
-
-    /// End of request body, only for Progressive requests
-    fn request_end(self,
-                   _response: &mut Response,
-                   _scope: &mut Scope<Context>)
-        -> Option<Self>
-    {
-        unreachable!();
-    }
-
-    fn timeout(self,
-               _response: &mut Response,
-               _scope: &mut Scope<Context>)
-        -> Option<(Self, Time)>
-    {
-        unimplemented!();
-    }
-
-    fn wakeup(self,
-              _response: &mut Response,
-              _scope: &mut Scope<Context>)
-        -> Option<Self>
-    {
-        unimplemented!();
+    fn poll_ready(&self) -> Async<()> {
+        Async::Ready(())
     }
 }
 
@@ -176,17 +174,58 @@ fn main() {
         .version("0.1")
         .author("nokaa <nokaa@cock.li>")
         .about("A pastebin server")
-        .args_from_usage(
-            "-a, --addr=[ADDR] 'Sets the IP:PORT combination (default \"127.0.0.1:3000\")'")
+        .args_from_usage("-a, --addr=[ADDR] 'Sets the IP:PORT combination (default \
+                          \"127.0.0.1:3000\")'")
         .get_matches();
 
-    let addr = matches.value_of("ADDR").unwrap_or("127.0.0.1:3000");
+    let addr = matches.value_of("ADDR").unwrap_or("127.0.0.1:3000").parse().unwrap();
+    let http: Http<_, _> = Http::new();
+    http.run(addr);
+}
 
-    let event_loop = rotor::Loop::new(&rotor::Config::new()).unwrap();
-    let mut loop_inst = event_loop.instantiate(Context { counter: 0 });
-    let lst = TcpListener::bind(&addr.parse().unwrap()).unwrap();
-    loop_inst.add_machine_with(|scope| Fsm::<PasteRoutes, _>::new(lst, (), scope))
-        .unwrap();
-    println!("Listening at {}", addr);
-    loop_inst.run().unwrap();
+type Response = ResponseFn<Finished<IoBuf<TcpStream>, Error>, TcpStream>;
+
+#[derive(Clone)]
+struct Http<E: Clone, S: Io + Clone> {
+    routes: HashMap<String, Rc<Fn(minihttp::Request, ResponseWriter<S>) -> Finished<IoBuf<S>, E>>>,
+}
+
+impl<E: Clone, S: Io + Clone> Service for Http<E, S> {
+    type Request = Request;
+    type Response = Response;
+    type Error = Error;
+    type Future = Finished<Self::Response, Error>;
+
+    fn call(&self, _req: minihttp::Request) -> Self::Future {
+        // Note: rather than allocating a response object, we return
+        // a lambda that pushes headers into `ResponseWriter` which
+        // writes them directly into response buffer without allocating
+        // intermediate structures
+        finished(ResponseFn::new(move |mut res| {
+            res.status(200, "OK");
+            res.add_chunked().unwrap();
+            if res.done_headers().unwrap() {
+                res.write_body(b"Hello, world!");
+            }
+            res.done()
+        }))
+    }
+
+    fn poll_ready(&self) -> Async<()> {
+        Async::Ready(())
+    }
+}
+
+impl<E: 'static + Clone, S: 'static + Io + Clone> Http<E, S> {
+    pub fn new() -> Http<E, S> {
+        Http { routes: HashMap::new() }
+    }
+
+    // pub fn handle_func(key: String, )
+
+    pub fn run(self, addr: SocketAddr) {
+        let mut lp = Core::new().unwrap();
+        minihttp::serve(&lp.handle(), addr, self);
+        lp.run(futures::empty::<(), ()>()).unwrap()
+    }
 }
